@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Gunvanti ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <style>
+        :root { --bg: #F5F0EB; --text: #2A2A2A; --accent: #D45D79; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Lato', sans-serif; overflow-x: hidden; width: 100vw;
+        }
+
+        /* --- 1. BACKGROUND LAYERS --- */
+        .fixed-sketch-container {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80vh; height: 80vh; z-index: 0; pointer-events: none; opacity: 0.5;
+        }
+        .bg-sketch {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: contain; mix-blend-mode: multiply; opacity: 0; transition: opacity 0.5s ease;
+        }
+        .texture {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9000; opacity: 0.4;
+            background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+        }
+
+        /* --- 2. TYPOGRAPHY --- */
+        h1 { font-family: 'Playfair Display', serif; font-size: 12vw; line-height: 0.85; letter-spacing: -2px; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 20px; }
+        .handwritten { font-family: 'Dancing Script', cursive; color: var(--accent); font-size: 2rem; }
+        p { font-size: 1.2rem; line-height: 1.8; color: #555; max-width: 400px; background: rgba(245, 240, 235, 0.9); backdrop-filter: blur(5px); padding: 20px; border-radius: 5px; }
+
+        /* --- 3. SECTIONS --- */
+        .scroll-content { position: relative; z-index: 2; }
+        section { min-height: 100vh; padding: 100px 5vw; display: flex; align-items: center; justify-content: center; }
+
+        /* HERO & STORY BLOCKS */
+        .hero { flex-direction: column; text-align: center; }
+        .story-block { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1200px; }
+        .story-block.reverse { flex-direction: row-reverse; }
+
+        .photo-frame {
+            width: 350px; height: 450px; background: white;
+            padding: 15px 15px 60px 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: rotate(-3deg); transition: transform 0.3s;
+        }
+        .photo-frame:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(20%); }
+
+        /* --- NEW: MEMORY STACK SECTION --- */
+        .stack-section {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .stack-wrapper {
+            position: relative; width: 400px; height: 500px; margin-top: 50px;
+        }
+        .stack-card {
+            position: absolute; top: 0; left: 0;
+            width: 300px; height: 380px;
+            background: white; padding: 10px 10px 50px 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            opacity: 0; /* Hidden initially */
+        }
+        .stack-card img { width: 100%; height: 100%; object-fit: cover; filter: sepia(10%); }
+
+        /* FINAL SECTION */
+        .final { flex-direction: column; text-align: center; }
+        button {
+            background: var(--text); color: white; border: none; padding: 15px 40px;
+            border-radius: 50px; font-family: 'Lato', sans-serif; font-size: 1rem; cursor: pointer;
+            transition: 0.3s; margin: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        button:hover { background: var(--accent); transform: translateY(-5px); }
+        .celebration-container {
+            height: 100vh; width: 100vw; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; background: #F5F0EB; text-align: center;
+            position: relative; z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .story-block, .story-block.reverse { flex-direction: column; gap: 40px; }
+            .photo-frame, .stack-card { width: 80vw; height: 100vw; }
+            .stack-wrapper { width: 100%; height: 100vw; display:flex; justify-content:center;}
+            h1 { font-size: 18vw; } h2 { font-size: 3rem; }
+            .fixed-sketch-container { width: 100vw; height: 50vh; top: 40%; opacity: 0.4; } 
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+    <div class="texture"></div>
+
+    <div class="fixed-sketch-container">
+        <img src="sketch1.png" class="bg-sketch" id="sketch1" style="opacity: 1;"> 
+        <img src="sketch2.png" class="bg-sketch" id="sketch2">
+        <img src="sketch3.png" class="bg-sketch" id="sketch3">
+        <img src="sketch4.png" class="bg-sketch" id="sketch4">
+    </div>
+
+    <div class="scroll-content">
+        
+        <section class="hero">
+            <span class="handwritten" style="font-size: 3rem; transform: rotate(-5deg);">To My Designer,</span>
+            <h1>GUNVANTI</h1>
+            <p style="margin-top: 20px; text-transform: uppercase; letter-spacing: 2px;">Scroll to see our story unfold...</p>
+        </section>
+
+        <section>
+            <div class="story-block">
+                <div class="photo-frame">
+                    <img src="chapter1.png">
+                </div>
+                <div style="padding: 20px;">
+                    <span class="handwritten">Chapter 01</span>
+                    <h2>The Spark</h2>
+                    <p>It started with distance. Two strangers on a bench, looking away, waiting for the timeline to align.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="story-block reverse">
+                <div class="photo-frame" style="transform: rotate(3deg);">
+                    <img src="chapter2.png">
+                </div>
+                <div style="padding: 20px;">
+                    <span class="handwritten">Chapter 02</span>
+                    <h2>The Chaos</h2>
+                    <p>Then came the words. The chaos. The laughter. We turned to face each other, and suddenly, the noise of the world faded away.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="stack-section" id="stack-pin">
+            <div style="text-align:center; z-index:10; margin-bottom: 20px;">
+                <span class="handwritten">Captured Moments</span>
+                <h2>Unforgettable</h2>
+            </div>
+            
+            <div class="stack-wrapper">
+                <div class="stack-card card-1" style="transform: rotate(-5deg); opacity: 1;">
+                    <img src="stack1.png">
+                </div>
+                <div class="stack-card card-2">
+                    <img src="stack2.png">
+                </div>
+                <div class="stack-card card-3">
+                    <img src="stack3.png">
+                </div>
+                <div class="stack-card card-4">
+                    <img src="stack4.png">
+                </div>
+                <div class="stack-card card-5">
+                    <img src="stack5.png">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="story-block">
+                <div class="photo-frame" style="transform: rotate(-2deg);">
+                    <img src="chapter3.png">
+                </div>
+                <div style="padding: 20px;">
+                    <span class="handwritten">Chapter 03</span>
+                    <h2>The Future</h2>
+                    <p>Distance couldn't keep us apart. We leaned in. We found peace in the proximity. Through the scars and the dark, I choose you.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="final">
+            <span class="handwritten" style="font-size: 4rem; margin-bottom: 20px;">The Next Chapter?</span>
+            <h2>Will you be my<br>Valentine Forever?</h2>
+            
+            <div style="margin-top: 40px;">
+                <button onclick="yes()">YES, I WILL! ❤️</button>
+                <button style="background:transparent; border:1px solid #333; color:#333;" id="no-btn" onmouseover="moveNo()">NO</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- 1. SMOOTH SCROLL ---
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 2. BACKGROUND SKETCH ANIMATION ---
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "body", start: "top top", end: "bottom bottom", scrub: true
+            }
+        });
+
+        tl.to("#sketch1", { opacity: 0, duration: 1 })
+          .to("#sketch2", { opacity: 1, duration: 1 }, "<") 
+          .to("#sketch2", { opacity: 0, duration: 1 })
+          .to("#sketch3", { opacity: 1, duration: 1 }, "<")
+          .to("#sketch3", { opacity: 0, duration: 1 })
+          .to("#sketch4", { opacity: 1, duration: 1 }, "<");
+
+        // --- 3. FOREGROUND ANIMATIONS ---
+        gsap.utils.toArray('.story-block').forEach(block => {
+            gsap.from(block, {
+                y: 50, opacity: 0, duration: 1.5,
+                scrollTrigger: { trigger: block, start: "top 70%" }
+            });
+        });
+
+        // --- 4. NEW: PHOTO STACK ANIMATION ---
+        let stackTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#stack-pin",
+                start: "center center", 
+                end: "+=1500", // Length of scroll to finish animation
+                pin: true,     // Locks the screen
+                scrub: 1       // Smooth scrubbing
+            }
+        });
+
+        // Animate Cards flying in to form a pile
+        stackTl
+            .to(".card-2", { opacity: 1, x: 20, y: 10, rotation: 5, duration: 1 })
+            .to(".card-3", { opacity: 1, x: -20, y: 20, rotation: -3, duration: 1 })
+            .to(".card-4", { opacity: 1, x: 10, y: -10, rotation: 8, duration: 1 })
+            .to(".card-5", { opacity: 1, x: -10, y: 5, rotation: -6, duration: 1 });
+
+
+        // --- 5. INTERACTIONS ---
+        function moveNo() {
+            const btn = document.getElementById('no-btn');
+            const x = (Math.random() - 0.5) * 200;
+            const y = (Math.random() - 0.5) * 200;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function yes() {
+            document.body.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.4; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');"></div>
+                <div class="celebration-container">
+                    <div style="width: 320px; height: 400px; background: white; padding: 15px 15px 60px 15px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); transform: rotate(3deg); margin-bottom: 40px;">
+                        <img src="forever.png" style="width: 100%; height: 100%; object-fit: cover; filter: sepia(10%);">
+                    </div>
+                    <h1 style="color:#D45D79; font-size: 5rem; font-family:'Playfair Display'; line-height:1;">FOREVER. ❤️</h1>
+                    <p style="font-family:'Dancing Script'; margin-top:20px; font-size:2.5rem; color:#2A2A2A;">Happy Valentine's Day, Gunvanti.</p>
+                </div>
+            `;
+            const audio = document.getElementById('bg-music');
+            if(audio) audio.play().catch(e => console.log("Audio handled"));
+        }
+        
+        window.addEventListener('click', () => {
+            document.getElementById('bg-music').play().catch(e => {});
+        }, { once: true });
+
+    </script>
+</body>
+</html>
